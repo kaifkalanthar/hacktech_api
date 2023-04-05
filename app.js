@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const multer = require('multer');
 const uploadMiddleware = multer({ dest: 'uploads/' });
 const fs = require('fs');
+const port = process.env.PORT
 
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(express.json());
@@ -40,7 +41,7 @@ app.get('/post', async (req, res) => {
     res.json(await Post.find());
 })
 
-app.listen(5000, () =>{
+app.listen(PORT, () =>{
     console.log("Hey! Kaif");
     console.log(process.env.MONGODB_URL);
 });
