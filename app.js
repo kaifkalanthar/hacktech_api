@@ -17,20 +17,19 @@ app.use('/uploads', express.static(__dirname + '/uploads'));
 mongoose.connect(process.env.MONGODB_URL);
 
 
-app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
+app.post('/post', async (req, res) => {
 
-    const { originalname, path } = req.file;
-    const parts = originalname.split(".");
-    const ext = parts[parts.length - 1];
-    const newPath = path + "." + ext;
-    fs.renameSync(path, newPath);
-
-    const { title, summary, content } = req.body;
+    const { team_name, team_lead, ps_number, link, team_member1, team_member2, team_member3, team_member4, team_member5 } = req.body;
     const postDoc = await Post.create({
-        title,
-        summary,
-        content,
-        cover: newPath,
+        team_name,
+        team_lead,
+        ps_number,
+        link,
+        team_member1,
+        team_member2,
+        team_member3,
+        team_member4,
+        team_member5
     });
 
     res.json(postDoc);
