@@ -3,10 +3,12 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const Register = require('./models/register');
+const cors = require('cors');
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 
 mongoose.set("strictQuery", false);
 
