@@ -1,20 +1,45 @@
 require('dotenv').config();
-
-const winston = require("winston");
-const express = require("express");
-const config = require("config");
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const mongoose = require('mongoose');
+const Register = require('./models/register');
 const app = express();
 
-//require("./startup/logging")();
-require("./startup/cors")(app);
-require("./startup/routes")(app);
-require("./startup/db")();
-require("./startup/config")();
-require("./startup/validation")();
+app.use(express.json());
+app.use(cookieParser());
 
-const port = process.env.PORT || config.get("port");
-const server = app.listen(port, () =>
-    winston.info(`Listening on port ${port}...`)
-);
+mongoose.set("strictQuery", false);
 
-module.exports = server;
+mongoose.connect(process.env.MONGODB_URL).then(() => {
+    console.log("Connected");
+}).catch(error => {
+    console.log(error);
+})
+
+app.get('/api/register', async (req, res) => {
+    try {
+        const register = await Register.find({});
+        res.status(200).json(register);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+})
+
+app.post('/api/register', async (req, res) => {
+    try {
+        const product = await Register.create(req.body)
+        res.status(200).json(product);
+    } catch (error) {
+        console.log(error.message);
+        res.status(400).json({ message: error.message });
+    }
+})
+
+app.get('/', (req, res) => {
+    res.send("Welcome Back chef!");
+})
+
+app.listen(5000, () => {
+    console.log("Hey!");
+})
+
