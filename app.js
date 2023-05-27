@@ -10,7 +10,7 @@ const uploadMiddleware = multer({ dest: 'uploads/' });
 const fs = require('fs');
 const port = process.env.PORT;
 
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ credentials: true, origin: 'https://hacktech.netlify.app' }));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
